@@ -51,4 +51,20 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     val minH2 = findMin(h2)
     findMin(meld(h1, h2)) == (if (minH1 < minH2) minH1 else minH2)
   }
+
+  property("inserted element always found") = forAll { (a: Int, h: H) =>
+    val newHeap = insert(a, h)
+
+    def contains(heap: H): Boolean = {
+      if (isEmpty(heap)) false
+      else if (findMin(heap) == a) {
+        true
+      } else {
+        contains(deleteMin(heap))
+      }
+    }
+    contains(newHeap)
+
+  }
+
 }
